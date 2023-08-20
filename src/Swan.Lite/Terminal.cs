@@ -15,7 +15,7 @@ namespace Swan
         #region Private Declarations
 
         private const int OutputFlushInterval = 15;
-        private static readonly ExclusiveTimer DequeueOutputTimer;
+        private static ExclusiveTimer DequeueOutputTimer;
         private static readonly object SyncLock = new object();
         private static readonly ConcurrentQueue<OutputContext> OutputQueue = new ConcurrentQueue<OutputContext>();
 
@@ -31,7 +31,12 @@ namespace Swan
         /// <summary>
         /// Initializes static members of the <see cref="Terminal"/> class.
         /// </summary>
-        static Terminal()
+        static Terminal() {
+            if (!Definitions.SuppressStaticConstructors)
+                Initialize();
+        }
+
+        public static void Initialize()
         {
             lock (SyncLock)
             {

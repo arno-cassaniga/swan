@@ -17,7 +17,12 @@ namespace Swan.Logging
 
         private static ulong _loggingSequence;
 
-        static Logger()
+        static Logger() {
+            if (!Definitions.SuppressStaticConstructors)
+                InitializeWithDefaultLoggers();
+        }
+
+        public static void InitializeWithDefaultLoggers()
         {
             if (Terminal.IsConsolePresent)
                 Loggers.Add(ConsoleLogger.Instance);
